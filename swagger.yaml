@@ -1,0 +1,35 @@
+swagger: "2.0"
+info:
+  version: "2018-01-28"
+  title: ${ApiName}
+basePath: "/images"
+schemes:
+  - "https"
+paths:
+  /{images+}:
+    x-amazon-apigateway-any-method:
+      produdes:
+      - "application/json"
+      parameters:
+      - name: "images"
+        in: "path"
+        required: true
+        type: "string"
+      responses: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+        httpMethod: "POST"
+        type: "aws_proxy"
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ImageHandlerFunction.Arn}/invocations
+
+
+x-amazon-apigateway-binary-media-types:
+  - "application/octet-stream"
+  - "image/jpeg"
+definitions:
+  Empty:
+    type: "object"
+    title: "Empty Schema"

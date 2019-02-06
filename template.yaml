@@ -1,0 +1,138 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+    image-handler
+
+    Sample SAM Template for image-handler
+
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+    Function:
+        Timeout: 20
+
+
+Resources:
+
+    ImagesBucket:
+        Type: AWS::S3::Bucket
+        Properties:
+            BucketName: images-repo.dev
+
+#    HelloWorldFunction:
+#        Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+#        Properties:
+#            CodeUri: target/image-handler-0.0.1-SNAPSHOT.jar
+#            Handler: helloworld.App::handleRequest
+#            Runtime: java8
+#            Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+#                Variables:
+#                    PARAM1: VALUE
+#            Events:
+#                HelloWorld:
+#                    Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+#                    Properties:
+#                        Path: /hello
+#                        Method: get
+
+    ImageHandlerFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            FunctionName: ImageHandler
+            CodeUri: target/image-handler-0.0.1-SNAPSHOT.jar
+            Handler: tec.mf.handler.ImageHandler::handleRequest
+            Runtime: java8
+            Description: Lambda for serving and manipulate images from several sources
+            Events:
+                GetImage:
+                    Type: Api
+                    Properties:
+                        RestApiId: !Ref ImageHandlerGatewayApi
+                        Path: '/*'
+                        Method: '*'
+
+
+    ImageHandlerGatewayApi:
+        Type: AWS::Serverless::Api
+        Properties:
+            StageName: dev
+#            DefinitionUri: ./swagger.yaml
+            DefinitionBody:
+                swagger: "2.0"
+                info:
+                    version: "2018-01-28"
+                    title:
+                        Ref: AWS::StackName
+                basePath: "/images"
+                schemes:
+                    - "https"
+                paths:
+                    /{proxy+}:
+                        x-amazon-apigateway-any-method:
+                            produces:
+                                - "application/json"
+                            parameters:
+                                - name: "images"
+                                  in: "path"
+                                  required: true
+                                  type: "string"
+                            responses: {}
+                            x-amazon-apigateway-integration:
+                                responses:
+                                    default:
+                                        statusCode: "200"
+                                httpMethod: "POST"
+                                type: "aws_proxy"
+                                uri:
+                                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ImageHandlerFunction.Arn}/invocations
+
+
+                x-amazon-apigateway-binary-media-types:
+                    - '*/*'
+#                    - "application/octet-stream"
+#                    - "image/jpeg"
+                definitions:
+                    Empty:
+                        type: "object"
+                        title: "Empty Schema"
+#            Variables:
+#                ApiName: !Ref AWS::StackName
+#                LambdaFunctionName: !Ref ImageHandlerFunction
+
+
+Outputs:
+
+#    HelloWorldApi:
+#      Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+#      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+#
+#    HelloWorldFunction:
+#      Description: "Hello World Lambda Function ARN"
+#      Value: !GetAtt HelloWorldFunction.Arn
+#
+#    HelloWorldFunctionIamRole:
+#      Description: "Implicit IAM Role created for Hello World function"
+#      Value: !GetAtt HelloWorldFunctionRole.Arn
+
+
+#    ImageHandlerdApi:
+#        Description: "API Gateway endpoint URL for Prod stage for Image Handler function"
+#        Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/img/"
+
+    ImageHandlerFunction:
+        Description: "Image Handler Lambda Function ARN"
+        Value: !GetAtt ImageHandlerFunction.Arn
+
+    ImageHandlerFunctionIamRole:
+        Description: "Implicit IAM Role created for Image Handler function"
+        Value: !GetAtt ImageHandlerFunctionRole.Arn
+
+    ApiUrl:
+        Description: URL of the API endpoint
+        Value: !Join
+            - ''
+            - - https://
+              - !Ref ImageHandlerGatewayApi
+              - '.execute-api.'
+              - !Ref 'AWS::Region'
+              - '.amazonaws.com/Dev'

@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: S3 Bucket to storage the image handler artifact
+Resources:
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: image-handler-artifact-bucket
+
+Outputs:
+  BucketName:
+    Value: !Ref ArtifactBucket
