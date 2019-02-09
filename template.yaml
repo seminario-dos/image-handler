@@ -14,27 +14,6 @@ Globals:
 
 Resources:
 
-    ImagesBucket:
-        Type: AWS::S3::Bucket
-        Properties:
-            BucketName: images-repo.dev
-
-#    HelloWorldFunction:
-#        Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-#        Properties:
-#            CodeUri: target/image-handler-0.0.1-SNAPSHOT.jar
-#            Handler: helloworld.App::handleRequest
-#            Runtime: java8
-#            Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-#                Variables:
-#                    PARAM1: VALUE
-#            Events:
-#                HelloWorld:
-#                    Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-#                    Properties:
-#                        Path: /hello
-#                        Method: get
-
     ImageHandlerFunction:
         Type: AWS::Serverless::Function
         Properties:
@@ -43,6 +22,10 @@ Resources:
             Handler: tec.mf.handler.ImageHandler::handleRequest
             Runtime: java8
             Description: Lambda for serving and manipulate images from several sources
+            Environment:
+                Variables:
+                    PROFILE: PROD
+                    IMAGES_BUCKET: images-repo.dev
             Events:
                 GetImage:
                     Type: Api
@@ -67,7 +50,7 @@ Resources:
                 schemes:
                     - "https"
                 paths:
-                    /{proxy+}:
+                    /images/{image+}:
                         x-amazon-apigateway-any-method:
                             produces:
                                 - "application/json"
@@ -98,6 +81,12 @@ Resources:
 #            Variables:
 #                ApiName: !Ref AWS::StackName
 #                LambdaFunctionName: !Ref ImageHandlerFunction
+
+
+    ImagesBucket:
+        Type: AWS::S3::Bucket
+        Properties:
+            BucketName: images-repo.dev
 
 
 Outputs:

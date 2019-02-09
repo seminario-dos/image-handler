@@ -1,13 +1,13 @@
 {
-  "resource": "/{proxy+}",
+  "resource": "/images/{image+}",
   "path": "/Seattle",
   "httpMethod": "POST",
   "headers": {
     "day": "Friday"
   },
   "queryStringParameters": {
-    "time": "morning",
-    "name": "John Doe"
+    "width": 100,
+    "height": 100
   },
   "pathParameters": {
     "proxy": "Seattle"
@@ -38,5 +38,5 @@
     "apiId": "r275xc9bmd"
   },
   "body": "{ \"callerName\": \"John\", \"time\":\"01-25-2018\" }",
-  "isBase64Encoded": false
+  "isBase64Encoded": true
 }
