@@ -1,32 +1,58 @@
 package tec.mf.handler.service;
 
-import org.apache.http.impl.io.EmptyInputStream;
 import org.junit.Test;
+import tec.mf.handler.io.ImageRequest;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 public class DefaultImageServiceTest {
 
     @Test
-    public void getImage() throws Exception {
-        FileInputStream expected = new FileInputStream(new File("src/test/resources/51ca22dd0cf293ac67bb394a-295xh.jpg"));
-        ImageService service = new DefaultImageService();
-        InputStream actual = service.getImage("src/test/resources/51ca22dd0cf293ac67bb394a-295xh.jpg");
+    public void whenNoWidthAndHeightInfo_thenReturnOriginalImage() throws Exception {
 
-        assertThat(actual).hasSameContentAs(expected);
+        FileInputStream original = new FileInputStream(new File("src/test/resources/51ca22dd0cf293ac67bb394a-295xh.jpg"));
+        ImageRequest imageRequest = mock(ImageRequest.class);
+
+        given(imageRequest.getFilename()).willReturn("src/test/resources/51ca22dd0cf293ac67bb394a-295xh.jpg");
+        given(imageRequest.getWidth()).willReturn(0);
+        given(imageRequest.getHeight()).willReturn(0);
+
+        ImageService service = new DefaultImageService();
+        InputStream actual = service.getImageFrom(imageRequest);
+
+        verify(imageRequest, times(1)).getFilename();
+        verify(imageRequest, times(1)).getWidth();
+        verify(imageRequest, times(0)).getHeight();
+
+        assertThat(actual).hasSameContentAs(original);
     }
 
     @Test
-    public void whenImageIsNotFound_thenEmptyStream() throws Exception {
+    public void whenValidWithAndHeigth_thenReturnResizedImage() throws Exception {
+
+        FileInputStream original = new FileInputStream(new File("src/test/resources/51ca22dd0cf293ac67bb394a-295xh.jpg"));
+        FileInputStream expected = new FileInputStream(new File("src/test/resources/51ca22dd0cf293ac67bb394a-100xh.jpg"));
+        ImageRequest imageRequest = mock(ImageRequest.class);
+
+        given(imageRequest.getFilename()).willReturn("src/test/resources/51ca22dd0cf293ac67bb394a-295xh.jpg");
+        given(imageRequest.getWidth()).willReturn(100);
+        given(imageRequest.getHeight()).willReturn(100);
+
         ImageService service = new DefaultImageService();
-        InputStream actual = service.getImage("not-found.jpg");
+        InputStream actual = service.getImageFrom(imageRequest);
 
-        assertThat(actual).isInstanceOf(EmptyInputStream.class);
+        verify(imageRequest, times(1)).getFilename();
+        verify(imageRequest, times(2)).getWidth();
+        verify(imageRequest, times(2)).getHeight();
+
+        assertThat(actual).hasSameContentAs(expected);
     }
-
 
 }

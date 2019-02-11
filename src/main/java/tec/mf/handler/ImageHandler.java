@@ -37,13 +37,8 @@ public class ImageHandler implements RequestStreamHandler {
         logger.log("Inside Image Handler ");
         ImageRequest imageRequest = this.inputEventParser().processInputEvent(inputStream, logger);
         //TODO: pass ImageRequest as argument instead of filename, width and height
-        InputStream imageResized = this.imageService().resizeImage(
-                imageRequest.getFilename(),
-                imageRequest.getWidth(),
-                imageRequest.getHeight()
-        );
+        InputStream imageResized = this.imageService().getImageFrom(imageRequest);
         this.imageHandlerResponseWriter().writeResponse(imageResized, outputStream, imageRequest);
-
 
 
 //        //TODO: move this

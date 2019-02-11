@@ -18,4 +18,5 @@ public class DefaultImageService extends BaseImageService {
             return EmptyInputStream.INSTANCE;
         }
     }
+
 }

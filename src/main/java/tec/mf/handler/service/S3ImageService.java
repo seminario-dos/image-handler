@@ -16,5 +16,4 @@ public class S3ImageService extends BaseImageService {
     public InputStream getImage(String imageName) {
         return this.dao.getImage(imageName);
     }
-
 }
