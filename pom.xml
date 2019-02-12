@@ -12,6 +12,7 @@
 
         <assertj.version>3.11.1</assertj.version>
         <aws.sdk.version>1.11.492</aws.sdk.version>
+        <aws-xray.sdk.version>2.2.0</aws-xray.sdk.version>
         <imagescalr-version>4.2</imagescalr-version>
         <jackson.version>2.9.7</jackson.version>
         <json-simple.version>1.1.1</json-simple.version>
@@ -25,6 +26,14 @@
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk-bom</artifactId>
                 <version>${aws.sdk.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-xray-recorder-sdk-bom</artifactId>
+                <version>${aws-xray.sdk.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -42,6 +51,20 @@
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-lambda-java-core</artifactId>
             <version>1.2.0</version>
+        </dependency>
+
+        <!-- AWS XRay dependencies -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-xray-recorder-sdk-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-xray-recorder-sdk-aws-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-xray-recorder-sdk-aws-sdk-instrumentor</artifactId>
         </dependency>
 
 
@@ -116,6 +139,16 @@
 
     <build>
       <plugins>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>1.8</source>
+                <target>1.8</target>
+            </configuration>
+        </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
