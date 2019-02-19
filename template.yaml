@@ -27,6 +27,7 @@ Resources:
                 Variables:
                     PROFILE: PROD
                     IMAGES_BUCKET: images-repo.dev
+                    thundra_apiKey: 27a5e4a0-d5fa-4c87-ae59-4f06c49c6467
             Policies:
                 - AWSLambdaExecute
                 - Version: '2012-10-17'
