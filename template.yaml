@@ -17,9 +17,9 @@ Resources:
     ImageHandlerFunction:
         Type: AWS::Serverless::Function
         Properties:
-            FunctionName: ImageHandler
-            CodeUri: target/image-handler-0.0.1-SNAPSHOT.jar
-            Handler: tec.mf.handler.ImageHandler::handleRequest
+            FunctionName: ImageHandlerKieker
+            CodeUri: target/image-handler-0.0.2-SNAPSHOT.jar
+            Handler: tec.mf.handler.ImageHandlerKieker::handleRequest
             Runtime: java8
             MemorySize: 512
             Description: Lambda for serving and manipulate images from several sources
@@ -27,7 +27,6 @@ Resources:
                 Variables:
                     PROFILE: PROD
                     IMAGES_BUCKET: images-repo.dev
-                    thundra_apiKey: 27a5e4a0-d5fa-4c87-ae59-4f06c49c6467
             Policies:
                 - AWSLambdaExecute
                 - Version: '2012-10-17'
@@ -44,41 +43,41 @@ Resources:
                         Path: '/*'
                         Method: '*'
 
-    ImageHandlerFunctionXRay:
-        Type: AWS::Serverless::Function
-        Properties:
-            FunctionName: ImageHandlerXRay
-            CodeUri: target/image-handler-0.0.1-SNAPSHOT.jar
-            Handler: tec.mf.handler.ImageHandlerXRay::handleRequest
-            Runtime: java8
-            MemorySize: 512
-            Description: Lambda for serving and manipulate images from several sources with XRay Tracing support
-            Tracing: Active
-            Environment:
-                Variables:
-                    PROFILE: PROD
-                    IMAGES_BUCKET: images-repo.dev
-            Policies:
-                - AWSLambdaExecute
-                - Version: '2012-10-17'
-                  Statement:
-                      - Effect: Allow
-                        Action:
-                            - s3:GetObject
-                        Resource: 'arn:aws:s3:::images-repo.dev/*'
-                - Version: '2012-10-17'
-                  Statement:
-                      - Effect: Allow
-                        Action:
-                            - xray:*
-                        Resource: '*'
-            Events:
-                GetImage:
-                    Type: Api
-                    Properties:
-                        RestApiId: !Ref ImageHandlerGatewayApi
-                        Path: '/*'
-                        Method: '*'
+#    ImageHandlerFunctionXRay:
+#        Type: AWS::Serverless::Function
+#        Properties:
+#            FunctionName: ImageHandlerXRay
+#            CodeUri: target/image-handler-0.0.1-SNAPSHOT.jar
+#            Handler: tec.mf.handler.ImageHandlerXRay::handleRequest
+#            Runtime: java8
+#            MemorySize: 512
+#            Description: Lambda for serving and manipulate images from several sources with XRay Tracing support
+#            Tracing: Active
+#            Environment:
+#                Variables:
+#                    PROFILE: PROD
+#                    IMAGES_BUCKET: images-repo.dev
+#            Policies:
+#                - AWSLambdaExecute
+#                - Version: '2012-10-17'
+#                  Statement:
+#                      - Effect: Allow
+#                        Action:
+#                            - s3:GetObject
+#                        Resource: 'arn:aws:s3:::images-repo.dev/*'
+#                - Version: '2012-10-17'
+#                  Statement:
+#                      - Effect: Allow
+#                        Action:
+#                            - xray:*
+#                        Resource: '*'
+#            Events:
+#                GetImage:
+#                    Type: Api
+#                    Properties:
+#                        RestApiId: !Ref ImageHandlerGatewayApi
+#                        Path: '/*'
+#                        Method: '*'
 
 
     ImageHandlerGatewayApi:
@@ -129,10 +128,10 @@ Resources:
 #                LambdaFunctionName: !Ref ImageHandlerFunction
 
 
-    ImagesBucket:
-        Type: AWS::S3::Bucket
-        Properties:
-            BucketName: images-repo.dev
+#    ImagesBucket:
+#        Type: AWS::S3::Bucket
+#        Properties:
+#            BucketName: images-repo.dev
 
 
 Outputs:
@@ -160,7 +159,7 @@ Outputs:
 
     ImageHandlerFunctionIamRole:
         Description: "Implicit IAM Role created for Image Handler function"
-        Value: !GetAtt ImageHandlerFunctionRole.Arn
+        Value: !GetAtt ImageHandlerFunction.Arn
 
     ApiUrl:
         Description: URL of the API endpoint

@@ -3,8 +3,8 @@ package tec.mf.handler;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
-import com.amazonaws.xray.AWSXRay;
-import com.amazonaws.xray.entities.Subsegment;
+//import com.amazonaws.xray.AWSXRay;
+//import com.amazonaws.xray.entities.Subsegment;
 import tec.mf.handler.io.ImageHandlerResponseWriter;
 import tec.mf.handler.io.ImageRequest;
 import tec.mf.handler.io.InputEventParser;
@@ -34,29 +34,29 @@ public class ImageHandlerXRay implements RequestStreamHandler {
 
     @Override
     public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
-        LambdaLogger logger = context.getLogger();
-        logger.log("Inside Image Handler ");
-
-        ImageRequest imageRequest = AWSXRay.createSubsegment("input event", new Function<Subsegment, ImageRequest>() {
-            @Override
-            public ImageRequest apply(Subsegment subsegment) {
-                return inputEventParser().processInputEvent(inputStream, logger);
-            }
-        });
-
-        InputStream imageResized = this.imageService().getImageFrom(imageRequest);
-        this.imageHandlerResponseWriter().writeResponse(imageResized, outputStream, imageRequest);
+//        LambdaLogger logger = context.getLogger();
+//        logger.log("Inside Image Handler ");
+//
+//        ImageRequest imageRequest = AWSXRay.createSubsegment("input event", new Function<Subsegment, ImageRequest>() {
+//            @Override
+//            public ImageRequest apply(Subsegment subsegment) {
+//                return inputEventParser().processInputEvent(inputStream, logger);
+//            }
+//        });
+//
+//        InputStream imageResized = this.imageService().getImageFrom(imageRequest);
+//        this.imageHandlerResponseWriter().writeResponse(imageResized, outputStream, imageRequest);
     }
 
-    private InputEventParser inputEventParser() {
-        return this.appConfig.getInputEventParser();
-    }
-
-    private ImageService imageService() {
-        return this.appConfig.getImageService();
-    }
-
-    private ImageHandlerResponseWriter imageHandlerResponseWriter() {
-        return this.appConfig.getImageHandlerResponseWriter();
-    }
+//    private InputEventParser inputEventParser() {
+//        return this.appConfig.getInputEventParser();
+//    }
+//
+//    private ImageService imageService() {
+//        return this.appConfig.getImageService();
+//    }
+//
+//    private ImageHandlerResponseWriter imageHandlerResponseWriter() {
+//        return this.appConfig.getImageHandlerResponseWriter();
+//    }
 }

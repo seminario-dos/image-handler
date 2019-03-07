@@ -1,0 +1,7 @@
+## The name of the Kieker instance.
+kieker.monitoring.name=KIEKER
+
+
+#kieker.monitoring.timer=kieker.monitoring.timer.SystemMilliTimer
+#kieker.monitoring.timer.SystemMilliTimer.offset=0
+#kieker.monitoring.timer.SystemMilliTimer.unit=0

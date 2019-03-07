@@ -1,17 +1,24 @@
 package tec.mf.handler.io;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import kieker.common.record.controlflow.OperationExecutionRecord;
+import kieker.monitoring.core.controller.IMonitoringController;
+import kieker.monitoring.core.controller.MonitoringController;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Optional.ofNullable;
 
 public class ImageRequestParser implements InputEventParser{
+
+//    private static final IMonitoringController MONITORING_CONTROLLER = MonitoringController.getInstance();
+
     private static final String PATH_PARAMETERS_ELEMENT_NAME = "pathParameters";
     private static final String PATH_PARAMETERS_IMAGE_ELEMENT_NAME = "image";
     private static final String QUERY_STRING_ELEMENT_NAME = "queryStringParameters";
@@ -21,11 +28,17 @@ public class ImageRequestParser implements InputEventParser{
     @Override
     public ImageRequest processInputEvent(InputStream inputStream, LambdaLogger logger) {
 
-        JSONParser parser = new JSONParser();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
         try{
+
+//            final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
+
+
+            JSONParser parser = new JSONParser();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
             JSONObject event = (JSONObject) parser.parse(reader);
-            logger.log(event.toJSONString());
+//            logger.log(event.toJSONString());
 
             String filename = ofNullable((JSONObject) event.get(PATH_PARAMETERS_ELEMENT_NAME))
                     .map(p -> (String) p.get(PATH_PARAMETERS_IMAGE_ELEMENT_NAME))
@@ -43,6 +56,17 @@ public class ImageRequestParser implements InputEventParser{
             System.out.println("Filename: " + filename);
             System.out.println("Width: " + width);
             System.out.println("Height: " + height);
+
+
+//            final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
+//            final OperationExecutionRecord e = new OperationExecutionRecord("public Object "+ parser.getClass().getName() +".parse(Reader)",
+//                    OperationExecutionRecord.NO_SESSION_ID,
+//                    OperationExecutionRecord.NO_TRACE_ID,
+//                    tin, tout,
+//                    InetAddress.getLocalHost().getHostName(),
+//                    2,
+//                    2);
+//            MONITORING_CONTROLLER.newMonitoringRecord(e);
 
 
 //            // By Headers

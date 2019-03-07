@@ -1,23 +1,17 @@
 package tec.mf.handler;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import kieker.common.record.controlflow.OperationExecutionRecord;
 import kieker.monitoring.core.controller.IMonitoringController;
 import kieker.monitoring.core.controller.MonitoringController;
-import tec.mf.handler.io.ImageHandlerResponseWriter;
 import tec.mf.handler.io.ImageRequest;
-import tec.mf.handler.io.InputEventParser;
-import tec.mf.handler.service.ImageService;
 
-import java.io.IOException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 
-
-public class ImageHandlerKieker implements RequestStreamHandler {
+public class Main {
 
     private static final AppConfig APP_CONFIG;
     private static final IMonitoringController MONITORING_CONTROLLER;
@@ -27,40 +21,35 @@ public class ImageHandlerKieker implements RequestStreamHandler {
         MONITORING_CONTROLLER = MonitoringController.getInstance();
     }
 
-    private final AppConfig appConfig;
-
-    public ImageHandlerKieker() {
-        this(APP_CONFIG);
-    }
-
-    public ImageHandlerKieker(AppConfig appConfig) {
-        this.appConfig = appConfig;
-    }
-
-    @Override
-    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
-        LambdaLogger logger = context.getLogger();
-        logger.log("Inside Image Handler ");
-
-        final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
-        handleRequestInternal(inputStream, outputStream, context);
-        final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
-        final OperationExecutionRecord e = new OperationExecutionRecord("public void "+ this.getClass().getName()+".handleRequest(InputStream, OutputStream, Context)",
-                OperationExecutionRecord.NO_SESSION_ID,
-                OperationExecutionRecord.NO_TRACE_ID,
-                tin, tout,
-                InetAddress.getLocalHost().getHostName(),
-                0,
-                0);
-        MONITORING_CONTROLLER.newMonitoringRecord(e);
-    }
-
-    private void handleRequestInternal(InputStream inputStream, OutputStream outputStream, Context context) {
+    public static void main(String... args) {
 
         try {
+            final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
+            handleRequest();
+            final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
+            final OperationExecutionRecord e = new OperationExecutionRecord("public void "+ Main.class.getName() +".handleRequest()",
+                    OperationExecutionRecord.NO_SESSION_ID,
+                    OperationExecutionRecord.NO_TRACE_ID,
+                    tin, tout,
+                    InetAddress.getLocalHost().getHostName(),
+                    0,
+                    0);
+            MONITORING_CONTROLLER.newMonitoringRecord(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private static void handleRequest(){
+
+        try {
+            InputStream inputStream = new FileInputStream(new File("src/test/resources/image-request-event.json"));
+            FileOutputStream outputStream = new FileOutputStream(new File("a-response.json"));
+
 
             final long tin1 = MONITORING_CONTROLLER.getTimeSource().getTime();
-            ImageRequest imageRequest = this.inputEventParser().processInputEvent(inputStream, null);
+            ImageRequest imageRequest = APP_CONFIG.getInputEventParser().processInputEvent(inputStream, null);
             final long tout1 = MONITORING_CONTROLLER.getTimeSource().getTime();
             final OperationExecutionRecord e1 = new OperationExecutionRecord("public ImageRequest "+ APP_CONFIG.getInputEventParser().getClass().getName() +".processInputEvent(InputStream)",
                     OperationExecutionRecord.NO_SESSION_ID,
@@ -71,7 +60,7 @@ public class ImageHandlerKieker implements RequestStreamHandler {
                     1);
 
             final long tin2 = MONITORING_CONTROLLER.getTimeSource().getTime();
-            InputStream imageStream = this.imageService().getImageFrom(imageRequest);
+            InputStream imageStream = APP_CONFIG.getImageService().getImageFrom(imageRequest);
             final long tout2 = MONITORING_CONTROLLER.getTimeSource().getTime();
             final OperationExecutionRecord e2 = new OperationExecutionRecord("public InputStream "+ APP_CONFIG.getImageService().getClass().getName() +".getImageFrom(InputStream)",
                     OperationExecutionRecord.NO_SESSION_ID,
@@ -83,7 +72,7 @@ public class ImageHandlerKieker implements RequestStreamHandler {
 
 
             final long tin3 = MONITORING_CONTROLLER.getTimeSource().getTime();
-            this.imageHandlerResponseWriter().writeResponse(imageStream, outputStream, imageRequest);
+            APP_CONFIG.getImageHandlerResponseWriter().writeResponse(imageStream, outputStream, imageRequest);
             final long tout3 = MONITORING_CONTROLLER.getTimeSource().getTime();
             final OperationExecutionRecord e3 = new OperationExecutionRecord("public void "+ APP_CONFIG.getImageHandlerResponseWriter().getClass().getName() +".writeResponse(InputStream, OutputStream, ImageRequest)",
                     OperationExecutionRecord.NO_SESSION_ID,
@@ -103,17 +92,4 @@ public class ImageHandlerKieker implements RequestStreamHandler {
         }
 
     }
-
-    private InputEventParser inputEventParser() {
-        return this.appConfig.getInputEventParser();
-    }
-
-    private ImageService imageService() {
-        return this.appConfig.getImageService();
-    }
-
-    private ImageHandlerResponseWriter imageHandlerResponseWriter() {
-        return this.appConfig.getImageHandlerResponseWriter();
-    }
-
 }
