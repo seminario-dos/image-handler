@@ -23,10 +23,14 @@ public class Main {
 
     public static void main(String... args) {
 
+        long init = System.currentTimeMillis();
+
         try {
-            final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
+//            final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
+            final long tin = System.currentTimeMillis();
             handleRequest();
-            final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
+            final long tout = System.currentTimeMillis();
+//            final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
             final OperationExecutionRecord e = new OperationExecutionRecord("public void "+ Main.class.getName() +".handleRequest()",
                     OperationExecutionRecord.NO_SESSION_ID,
                     OperationExecutionRecord.NO_TRACE_ID,
@@ -34,10 +38,13 @@ public class Main {
                     InetAddress.getLocalHost().getHostName(),
                     0,
                     0);
+//            System.out.println("0,0 Diff: " + (tout - tin) + " tin: " + tin + " tout: " + tout + " init: " + init);
             MONITORING_CONTROLLER.newMonitoringRecord(e);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        long end = System.currentTimeMillis();
+        System.out.println("=> " + (end - init));
 
     }
 
