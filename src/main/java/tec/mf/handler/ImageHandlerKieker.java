@@ -42,9 +42,11 @@ public class ImageHandlerKieker implements RequestStreamHandler {
         LambdaLogger logger = context.getLogger();
         logger.log("Inside Image Handler ");
 
-        final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
+//        final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
+        final long tin = System.currentTimeMillis();
         handleRequestInternal(inputStream, outputStream, context);
-        final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
+        final long tout = System.currentTimeMillis();
+//        final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
         final OperationExecutionRecord e = new OperationExecutionRecord("public void "+ this.getClass().getName()+".handleRequest(InputStream, OutputStream, Context)",
                 OperationExecutionRecord.NO_SESSION_ID,
                 OperationExecutionRecord.NO_TRACE_ID,
