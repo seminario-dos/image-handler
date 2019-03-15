@@ -42,11 +42,9 @@ public class ImageHandlerKieker implements RequestStreamHandler {
         LambdaLogger logger = context.getLogger();
         logger.log("Inside Image Handler ");
 
-//        final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
-        final long tin = System.currentTimeMillis();
+        final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
         handleRequestInternal(inputStream, outputStream, context);
-        final long tout = System.currentTimeMillis();
-//        final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
+        final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
         final OperationExecutionRecord e = new OperationExecutionRecord("public void "+ this.getClass().getName()+".handleRequest(InputStream, OutputStream, Context)",
                 OperationExecutionRecord.NO_SESSION_ID,
                 OperationExecutionRecord.NO_TRACE_ID,
@@ -61,11 +59,9 @@ public class ImageHandlerKieker implements RequestStreamHandler {
 
         try {
 
-//            final long tin1 = MONITORING_CONTROLLER.getTimeSource().getTime();
-            final long tin1 = System.currentTimeMillis();
+            final long tin1 = MONITORING_CONTROLLER.getTimeSource().getTime();
             ImageRequest imageRequest = this.inputEventParser().processInputEvent(inputStream, null);
-            final long tout1 = System.currentTimeMillis();
-//            final long tout1 = MONITORING_CONTROLLER.getTimeSource().getTime();
+            final long tout1 = MONITORING_CONTROLLER.getTimeSource().getTime();
             final OperationExecutionRecord e1 = new OperationExecutionRecord("public ImageRequest "+ APP_CONFIG.getInputEventParser().getClass().getName() +".processInputEvent(InputStream)",
                     OperationExecutionRecord.NO_SESSION_ID,
                     OperationExecutionRecord.NO_TRACE_ID,
@@ -74,11 +70,9 @@ public class ImageHandlerKieker implements RequestStreamHandler {
                     1,
                     1);
 
-//            final long tin2 = MONITORING_CONTROLLER.getTimeSource().getTime();
-            final long tin2 = System.currentTimeMillis();
+            final long tin2 = MONITORING_CONTROLLER.getTimeSource().getTime();
             InputStream imageStream = this.imageService().getImageFrom(imageRequest);
-            final long tout2 = System.currentTimeMillis();
-//            final long tout2 = MONITORING_CONTROLLER.getTimeSource().getTime();
+            final long tout2 = MONITORING_CONTROLLER.getTimeSource().getTime();
             final OperationExecutionRecord e2 = new OperationExecutionRecord("public InputStream "+ APP_CONFIG.getImageService().getClass().getName() +".getImageFrom(ImageRequest)",
                     OperationExecutionRecord.NO_SESSION_ID,
                     OperationExecutionRecord.NO_TRACE_ID,
@@ -88,11 +82,9 @@ public class ImageHandlerKieker implements RequestStreamHandler {
                     1);
 
 
-//            final long tin3 = MONITORING_CONTROLLER.getTimeSource().getTime();
-            final long tin3 = System.currentTimeMillis();
+            final long tin3 = MONITORING_CONTROLLER.getTimeSource().getTime();
             this.imageHandlerResponseWriter().writeResponse(imageStream, outputStream, imageRequest);
-            final long tout3 = System.currentTimeMillis();
-//            final long tout3 = MONITORING_CONTROLLER.getTimeSource().getTime();
+            final long tout3 = MONITORING_CONTROLLER.getTimeSource().getTime();
             final OperationExecutionRecord e3 = new OperationExecutionRecord("public void "+ APP_CONFIG.getImageHandlerResponseWriter().getClass().getName() +".writeResponse(InputStream, OutputStream, ImageRequest)",
                     OperationExecutionRecord.NO_SESSION_ID,
                     OperationExecutionRecord.NO_TRACE_ID,

@@ -25,11 +25,9 @@ public class S3ImageService extends BaseImageService {
     @Override
     public InputStream getImage(String imageName) {
 
-//        final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
-        final long tin = System.currentTimeMillis();
+        final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
         InputStream imageStream = this.dao.getImage(imageName);
-        final long tout = System.currentTimeMillis();
-//        final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
+        final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
         try {
             final OperationExecutionRecord e = new OperationExecutionRecord("public InputStream " + this.dao.getClass().getName() + ".getImage(InputStream)",
                     OperationExecutionRecord.NO_SESSION_ID,

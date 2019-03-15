@@ -31,12 +31,9 @@ public class S3Dao {
     }
 
     public InputStream getImage(String name) {
-//        final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
-        final long tin = System.currentTimeMillis();
+        final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
         S3Object s3Object = this.amazonS3.getObject(bucket, "originals/" + name);
-        final long tout = System.currentTimeMillis();
-//        final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
-        System.out.println("4,3 Diff: " + (tout - tin));
+        final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
         try {
             final OperationExecutionRecord e = new OperationExecutionRecord(
                     "public S3Object " + this.amazonS3.getClass().getName() + ".getObject(String, String)",
