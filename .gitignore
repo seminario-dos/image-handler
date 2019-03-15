@@ -25,3 +25,7 @@ nbdist/
 
 packaged.yaml
 dependency-reduced-pom.xml
+*.pem
+
+.DS_Store
+extracted-logs/
