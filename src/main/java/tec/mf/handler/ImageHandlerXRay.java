@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.amazonaws.xray.AWSXRay;
+import com.amazonaws.xray.entities.Segment;
 import com.amazonaws.xray.entities.Subsegment;
 import tec.mf.handler.io.ImageHandlerResponseWriter;
 import tec.mf.handler.io.ImageRequest;
@@ -13,6 +14,7 @@ import tec.mf.handler.service.ImageService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ImageHandlerXRay implements RequestStreamHandler {
@@ -44,8 +46,19 @@ public class ImageHandlerXRay implements RequestStreamHandler {
             }
         });
 
-        InputStream imageResized = this.imageService().getImageFrom(imageRequest);
-        this.imageHandlerResponseWriter().writeResponse(imageResized, outputStream, imageRequest);
+        InputStream imageResized = AWSXRay.createSubsegment("resize event", new Function<Subsegment, InputStream>() {
+            @Override
+            public InputStream apply(Subsegment subsegment) {
+                return imageService().getImageFrom(imageRequest);
+            }
+        });
+
+        AWSXRay.createSegment("write response", new Consumer<Segment>() {
+            @Override
+            public void accept(Segment segment) {
+                imageHandlerResponseWriter().writeResponse(imageResized, outputStream, imageRequest);
+            }
+        });
     }
 
     private InputEventParser inputEventParser() {

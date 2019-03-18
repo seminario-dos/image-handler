@@ -1,6 +1,8 @@
 package tec.mf.handler.service;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.xray.AWSXRay;
+import com.amazonaws.xray.entities.Subsegment;
 import org.imgscalr.Scalr;
 import tec.mf.handler.io.ImageRequest;
 
@@ -9,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.function.Function;
 
 public abstract class BaseImageService implements ImageService {
 
@@ -42,7 +45,15 @@ public abstract class BaseImageService implements ImageService {
         InputStream original = this.getImage(imageRequest.getFilename());
         //TODO: modify the following validation. Do some like dimensionsAreValid(width, height)
         if(imageRequest.getWidth() > 0 && imageRequest.getHeight() > 0) {
-            return this.resizeImage(original, imageRequest.getWidth(), imageRequest.getHeight());
+
+            return AWSXRay.createSubsegment("resize operation", new Function<Subsegment, InputStream>() {
+                @Override
+                public InputStream apply(Subsegment subsegment) {
+                    return resizeImage(original, imageRequest.getWidth(), imageRequest.getHeight());
+                }
+            });
+
+//            return this.resizeImage(original, imageRequest.getWidth(), imageRequest.getHeight());
         }
         return original;
     }
