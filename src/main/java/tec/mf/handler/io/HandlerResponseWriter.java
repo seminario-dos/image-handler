@@ -1,19 +1,13 @@
 package tec.mf.handler.io;
 
-import kieker.common.record.controlflow.OperationExecutionRecord;
-import kieker.monitoring.core.controller.IMonitoringController;
-import kieker.monitoring.core.controller.MonitoringController;
 import org.json.simple.JSONObject;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.InetAddress;
 import java.util.Base64;
 
 public class HandlerResponseWriter implements ImageHandlerResponseWriter {
-
-    private static final IMonitoringController MONITORING_CONTROLLER = MonitoringController.getInstance();
 
     @Override
     public void writeResponse(InputStream inputStream, OutputStream outputStream, ImageRequest imageRequest) {
@@ -75,8 +69,3 @@ public class HandlerResponseWriter implements ImageHandlerResponseWriter {
         return "";
     }
 }
-/**
-
- 1552625046
-
- */

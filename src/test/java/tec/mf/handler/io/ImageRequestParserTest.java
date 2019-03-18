@@ -1,7 +1,6 @@
 package tec.mf.handler.io;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -19,10 +18,9 @@ public class ImageRequestParserTest {
     @Test
     public void some() throws IOException {
         InputStream inputStream = new FileInputStream(new File("src/test/resources/image-request-event.json"));
-        LambdaLogger lambdaLogger = mock(LambdaLogger.class);
 
         ImageRequestParser parser = new ImageRequestParser();
-        ImageRequest imageRequest = parser.processInputEvent(inputStream, lambdaLogger);
+        ImageRequest imageRequest = parser.processInputEvent(inputStream);
 
         assertThat(imageRequest.getFilename()).isEqualTo("51ca22dd0cf293ac67bb394a-295xh.jpg");
         assertThat(imageRequest.getWidth()).isEqualTo(100);

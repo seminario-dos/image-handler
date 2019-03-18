@@ -17,12 +17,13 @@ Resources:
     ImageHandlerFunction:
         Type: AWS::Serverless::Function
         Properties:
-            FunctionName: ImageHandlerKieker
-            CodeUri: target/image-handler-0.0.2-SNAPSHOT.jar
-            Handler: tec.mf.handler.ImageHandlerKieker::handleRequest
+            FunctionName: ImageHandlerXRay
+            CodeUri: target/image-handler-0.0.1-SNAPSHOT.jar
+            Handler: tec.mf.handler.ImageHandlerXRay::handleRequest
             Runtime: java8
             MemorySize: 512
-            Description: Lambda for serving and manipulate images from several sources
+            Description: Lambda for serving and manipulate images from several sources with XRay Tracing support
+            Tracing: Active
             Environment:
                 Variables:
                     PROFILE: PROD
@@ -35,6 +36,12 @@ Resources:
                         Action:
                             - s3:GetObject
                         Resource: 'arn:aws:s3:::images-repo.dev/*'
+                - Version: '2012-10-17'
+                  Statement:
+                      - Effect: Allow
+                        Action:
+                            - xray:*
+                        Resource: '*'
             Events:
                 GetImage:
                     Type: Api
@@ -42,42 +49,6 @@ Resources:
                         RestApiId: !Ref ImageHandlerGatewayApi
                         Path: '/*'
                         Method: '*'
-
-#    ImageHandlerFunctionXRay:
-#        Type: AWS::Serverless::Function
-#        Properties:
-#            FunctionName: ImageHandlerXRay
-#            CodeUri: target/image-handler-0.0.1-SNAPSHOT.jar
-#            Handler: tec.mf.handler.ImageHandlerXRay::handleRequest
-#            Runtime: java8
-#            MemorySize: 512
-#            Description: Lambda for serving and manipulate images from several sources with XRay Tracing support
-#            Tracing: Active
-#            Environment:
-#                Variables:
-#                    PROFILE: PROD
-#                    IMAGES_BUCKET: images-repo.dev
-#            Policies:
-#                - AWSLambdaExecute
-#                - Version: '2012-10-17'
-#                  Statement:
-#                      - Effect: Allow
-#                        Action:
-#                            - s3:GetObject
-#                        Resource: 'arn:aws:s3:::images-repo.dev/*'
-#                - Version: '2012-10-17'
-#                  Statement:
-#                      - Effect: Allow
-#                        Action:
-#                            - xray:*
-#                        Resource: '*'
-#            Events:
-#                GetImage:
-#                    Type: Api
-#                    Properties:
-#                        RestApiId: !Ref ImageHandlerGatewayApi
-#                        Path: '/*'
-#                        Method: '*'
 
 
     ImageHandlerGatewayApi:

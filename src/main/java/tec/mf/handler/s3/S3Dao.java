@@ -7,17 +7,11 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
-import kieker.common.record.controlflow.OperationExecutionRecord;
-import kieker.monitoring.core.controller.IMonitoringController;
-import kieker.monitoring.core.controller.MonitoringController;
 
 import java.io.InputStream;
-import java.net.InetAddress;
 
 public class S3Dao {
-
-    private static final IMonitoringController MONITORING_CONTROLLER = MonitoringController.getInstance();
-
+    private static final String KEY_PREFIX = "originals/";
     private final AmazonS3 amazonS3;
     private final String bucket;
 
@@ -31,22 +25,7 @@ public class S3Dao {
     }
 
     public InputStream getImage(String name) {
-        final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
-        S3Object s3Object = this.amazonS3.getObject(bucket, "originals/" + name);
-        final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
-        try {
-            final OperationExecutionRecord e = new OperationExecutionRecord(
-                    "public S3Object " + this.amazonS3.getClass().getName() + ".getObject(String, String)",
-                    OperationExecutionRecord.NO_SESSION_ID,
-                    OperationExecutionRecord.NO_TRACE_ID,
-                    tin, tout,
-                    InetAddress.getLocalHost().getHostName(),
-                    4,
-                    3);
-            MONITORING_CONTROLLER.newMonitoringRecord(e);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        S3Object s3Object = this.amazonS3.getObject(bucket, KEY_PREFIX + name);
 
         return s3Object.getObjectContent();
     }

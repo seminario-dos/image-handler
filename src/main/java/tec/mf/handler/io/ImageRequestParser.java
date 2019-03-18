@@ -1,16 +1,12 @@
 package tec.mf.handler.io;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import kieker.common.record.controlflow.OperationExecutionRecord;
-import kieker.monitoring.core.controller.IMonitoringController;
-import kieker.monitoring.core.controller.MonitoringController;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Optional.ofNullable;
@@ -26,7 +22,7 @@ public class ImageRequestParser implements InputEventParser{
     private static final String QUERY_STRING_HEIGHT_ELEMENT_NAME = "height";
 
     @Override
-    public ImageRequest processInputEvent(InputStream inputStream, LambdaLogger logger) {
+    public ImageRequest processInputEvent(InputStream inputStream) {
 
 
         try{
