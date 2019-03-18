@@ -17,7 +17,6 @@
         <jackson.version>2.9.7</jackson.version>
         <json-simple.version>1.1.1</json-simple.version>
         <junit.jupiter.version>5.3.2</junit.jupiter.version>
-        <kieker.version>1.13</kieker.version>
         <mockito.version>1.9.5</mockito.version>
     </properties>
 
@@ -95,13 +94,6 @@
             <artifactId>imgscalr-lib</artifactId>
             <version>${imagescalr-version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>net.kieker-monitoring</groupId>
-            <artifactId>kieker</artifactId>
-            <version>${kieker.version}</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
