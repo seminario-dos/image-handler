@@ -53,11 +53,11 @@ public class ImageHandlerXRay implements RequestStreamHandler {
             }
         });
 
-        AWSXRay.createSegment("write response", new Consumer<Segment>() {
-            @Override
-            public void accept(Segment segment) {
+        AWSXRay.createSubsegment("write response", () -> {
+//            @Override
+//            public void accept(Segment segment) {
                 imageHandlerResponseWriter().writeResponse(imageResized, outputStream, imageRequest);
-            }
+//            }
         });
     }
 
