@@ -53,6 +53,7 @@ public class ImageHandlerSimple implements RequestStreamHandler {
                 0,
                 0);
         MONITORING_CONTROLLER.newMonitoringRecord(e);
+        logger.log("tout: "+ tout + ", tin:" + tin);
     }
 
     private void handleRequestInternal(InputStream inputStream, OutputStream outputStream, Context context) {
