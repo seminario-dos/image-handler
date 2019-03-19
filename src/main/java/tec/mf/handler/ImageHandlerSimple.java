@@ -17,7 +17,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 
 
-public class ImageHandlerKieker implements RequestStreamHandler {
+public class ImageHandlerSimple implements RequestStreamHandler {
 
     private static final AppConfig APP_CONFIG;
     private static final IMonitoringController MONITORING_CONTROLLER;
@@ -29,11 +29,11 @@ public class ImageHandlerKieker implements RequestStreamHandler {
 
     private final AppConfig appConfig;
 
-    public ImageHandlerKieker() {
+    public ImageHandlerSimple() {
         this(APP_CONFIG);
     }
 
-    public ImageHandlerKieker(AppConfig appConfig) {
+    public ImageHandlerSimple(AppConfig appConfig) {
         this.appConfig = appConfig;
     }
 
@@ -42,13 +42,13 @@ public class ImageHandlerKieker implements RequestStreamHandler {
         LambdaLogger logger = context.getLogger();
         logger.log("Inside Image Handler ");
 
-        final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
+        long tin = System.currentTimeMillis();
         handleRequestInternal(inputStream, outputStream, context);
-        final long tout = MONITORING_CONTROLLER.getTimeSource().getTime();
+        long tout = System.currentTimeMillis();
         final OperationExecutionRecord e = new OperationExecutionRecord("public void "+ this.getClass().getName()+".handleRequest(InputStream, OutputStream, Context)",
                 OperationExecutionRecord.NO_SESSION_ID,
                 OperationExecutionRecord.NO_TRACE_ID,
-                tin, tout,
+                tout, tout - tin,
                 InetAddress.getLocalHost().getHostName(),
                 0,
                 0);

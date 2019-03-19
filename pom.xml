@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tec.mf</groupId>
     <artifactId>image-handler</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2-simple-measuring-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>image-handler</name>
     <properties>
@@ -11,10 +11,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <activemq-all.version>5.15.8</activemq-all.version>
-        <!--<aspectjweaver.version>1.8.2</aspectjweaver.version>-->
         <assertj.version>3.11.1</assertj.version>
         <aws.sdk.version>1.11.492</aws.sdk.version>
-        <aws-xray.sdk.version>2.2.0</aws-xray.sdk.version>
         <imagescalr-version>4.2</imagescalr-version>
         <jackson.version>2.9.7</jackson.version>
         <json-simple.version>1.1.1</json-simple.version>
@@ -32,21 +30,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-xray-recorder-sdk-bom</artifactId>
-                <version>${aws-xray.sdk.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
 
-
-        <!-- == AWS SDK == -->
 
         <dependency>
             <groupId>com.amazonaws</groupId>
@@ -58,21 +46,6 @@
             <artifactId>aws-lambda-java-core</artifactId>
             <version>1.2.0</version>
         </dependency>
-
-        <!-- AWS XRay dependencies -->
-        <!--<dependency>-->
-            <!--<groupId>com.amazonaws</groupId>-->
-            <!--<artifactId>aws-xray-recorder-sdk-core</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.amazonaws</groupId>-->
-            <!--<artifactId>aws-xray-recorder-sdk-aws-sdk</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.amazonaws</groupId>-->
-            <!--<artifactId>aws-xray-recorder-sdk-aws-sdk-instrumentor</artifactId>-->
-        <!--</dependency>-->
-
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -104,11 +77,7 @@
             <version>${kieker.version}</version>
             <classifier>emf</classifier>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.aspectj</groupId>-->
-            <!--<artifactId>aspectjweaver</artifactId>-->
-            <!--<version>${aspectjweaver.version}</version>-->
-        <!--</dependency>-->
+
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-all</artifactId>
@@ -177,61 +146,6 @@
             </execution>
           </executions>
         </plugin>
-
-          <!--<plugin>-->
-              <!--<groupId>org.apache.maven.plugins</groupId>-->
-              <!--<artifactId>maven-jar-plugin</artifactId>-->
-              <!--<configuration>-->
-                  <!--<archive>-->
-                      <!--<manifest>-->
-                          <!--<addClasspath>true</addClasspath>-->
-                          <!--<mainClass>tec.mf.handler.Main</mainClass>-->
-                      <!--</manifest>-->
-                  <!--</archive>-->
-              <!--</configuration>-->
-          <!--</plugin>-->
-
-          <!--<plugin>-->
-              <!--<groupId>org.apache.maven.plugins</groupId>-->
-              <!--<artifactId>maven-surefire-plugin</artifactId>-->
-              <!--<version>2.10</version>-->
-              <!--<configuration>-->
-                  <!--<argLine>-->
-                        <!-- -javaagent:"${settings.localRepository}"/org/aspectj/-->
-                      <!--aspectjweaver/${aspectjweaver.version}/-->
-                      <!--aspectjweaver-${aspectjweaver.version}.jar-->
-                  <!--</argLine>-->
-                  <!--<useSystemClassLoader>true</useSystemClassLoader>-->
-                  <!--<forkMode>always</forkMode>-->
-              <!--</configuration>-->
-          <!--</plugin>-->
-
-
-          <!--<plugin>-->
-              <!--<groupId>org.codehaus.mojo</groupId>-->
-              <!--<artifactId>aspectj-maven-plugin</artifactId>-->
-              <!--<version>1.7</version>-->
-              <!--<configuration>-->
-                  <!--<complianceLevel>1.8</complianceLevel>-->
-                  <!--<source>1.8</source>-->
-                  <!--<target>1.8</target>-->
-                  <!--<showWeaveInfo>true</showWeaveInfo>-->
-                  <!--<verbose>true</verbose>-->
-                  <!--<Xlint>ignore</Xlint>-->
-                  <!--<encoding>UTF-8 </encoding>-->
-              <!--</configuration>-->
-              <!--<executions>-->
-                  <!--<execution>-->
-                      <!--<goals>-->
-                          <!--&lt;!&ndash; use this goal to weave all your main classes &ndash;&gt;-->
-                          <!--<goal>compile</goal>-->
-                          <!--&lt;!&ndash; use this goal to weave all your test classes &ndash;&gt;-->
-                          <!--<goal>test-compile</goal>-->
-                      <!--</goals>-->
-                  <!--</execution>-->
-              <!--</executions>-->
-          <!--</plugin>-->
-
 
       </plugins>
     </build>
