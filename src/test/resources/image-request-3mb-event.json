@@ -1,0 +1,47 @@
+{
+  "headers": {
+    "Accept": "*/*",
+    "User-Agent": "HTTPie/1.0.2",
+    "Connection": "keep-alive",
+    "X-Forwarded-Proto": "http",
+    "Host": "localhost:3000",
+    "Accept-Encoding": "gzip, deflate",
+    "X-Forwarded-Port": "3000"
+  },
+  "pathParameters": {
+    "image": "pexels-photo-code-3mb.jpg"
+  },
+  "path": "/images/pexels-photo-code-3mb.jpg",
+  "isBase64Encoded": true,
+  "requestContext": {
+    "accountId": "123456789012",
+    "path": "/images/{image+}",
+    "resourceId": "123456",
+    "stage": "prod",
+    "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "caller": null,
+      "apiKey": null,
+      "sourceIp": "127.0.0.1",
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "Custom User Agent String",
+      "user": null
+    },
+    "resourcePath": "/images/{image+}",
+    "httpMethod": "GET",
+    "extendedRequestId": null,
+    "apiId": "1234567890"
+  },
+  "resource": "/images/{image+}",
+  "httpMethod": "GET",
+  "body": null,
+  "queryStringParameters": {
+    "width": "50",
+    "height": "66"
+  },
+  "stageVariables": null
+}
