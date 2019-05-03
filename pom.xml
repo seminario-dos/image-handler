@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tec.mf</groupId>
     <artifactId>image-handler</artifactId>
-    <version>0.0.2-xray-SNAPSHOT</version>
+    <version>0.0.3-xray-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>image-handler</name>
     <properties>

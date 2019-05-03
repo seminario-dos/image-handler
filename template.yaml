@@ -18,11 +18,11 @@ Resources:
         Type: AWS::Serverless::Function
         Properties:
             FunctionName: ImageHandlerXRay
-            CodeUri: target/image-handler-0.0.2-xray-SNAPSHOT.jar
+            CodeUri: target/image-handler-0.0.3-xray-SNAPSHOT.jar
             Handler: tec.mf.handler.ImageHandlerXRay::handleRequest
             Runtime: java8
             MemorySize: 512
-            Description: Lambda for serving and manipulate images from several sources with XRay Tracing support
+            Description: Lambda for resizing images with XRay Tracing support
             Tracing: Active
             Environment:
                 Variables:
