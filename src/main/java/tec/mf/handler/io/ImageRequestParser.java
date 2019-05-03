@@ -27,9 +27,6 @@ public class ImageRequestParser implements InputEventParser{
 
         try{
 
-//            final long tin = MONITORING_CONTROLLER.getTimeSource().getTime();
-
-
             JSONParser parser = new JSONParser();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
