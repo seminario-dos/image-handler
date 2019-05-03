@@ -11,7 +11,8 @@ import com.amazonaws.services.s3.model.S3Object;
 import java.io.InputStream;
 
 public class S3Dao {
-    private static final String KEY_PREFIX = "originals/";
+//    private static final String KEY_PREFIX = "originals/";
+    private static final String KEY_PREFIX = "cluster-a/";
     private final AmazonS3 amazonS3;
     private final String bucket;
 

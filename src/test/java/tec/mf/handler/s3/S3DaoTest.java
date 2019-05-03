@@ -4,7 +4,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -20,7 +19,6 @@ import static org.assertj.core.api.Assertions.*;
 
 public class S3DaoTest {
 
-    @Ignore
     @Test
     public void getImage() throws Exception {
 
@@ -49,7 +47,7 @@ public class S3DaoTest {
         verify(s3Object, times(1)).getObjectContent();
 
         assertThat(bucketArg.getValue()).isEqualTo("originals");
-        assertThat(imageArg.getValue()).isEqualTo("image.jpg");
+        assertThat(imageArg.getValue()).isEqualTo("cluster-a/image.jpg");
 
         assertThat(actual).isNotNull();
         assertThat(actual).isSameAs(inputStream);
