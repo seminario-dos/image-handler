@@ -35,7 +35,6 @@ public class S3ImageService implements ImageService {
                 }
             });
         }
-//        return original;
 
         try {
             BufferedImage bufferedImage = ImageIO.read(original);
