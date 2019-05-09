@@ -2,7 +2,7 @@
 
 RESIZE_DIMENSIONS=("?width=30&height=30" "?width=60&height=60" "?width=100&height=100" "?width=110&height=110" "?width=128&height=128" "?width=150&height=200" "?width=161&height=161" "?width=165&height=165" "?width=180&height=180" "?width=300&height=300" "?width=400&height=400")
 
-NUMBER_OF_INVOCATIONS=100
+NUMBER_OF_INVOCATIONS=5
 
 for (( i=1; i<=$NUMBER_OF_INVOCATIONS; i++ )); do
 
