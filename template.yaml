@@ -91,10 +91,10 @@ Resources:
 #                LambdaFunctionName: !Ref ImageHandlerFunction
 
 
-#    ImagesBucket:
-#        Type: AWS::S3::Bucket
-#        Properties:
-#            BucketName: images-repo.dev
+    ImagesBucket:
+        Type: AWS::S3::Bucket
+        Properties:
+            BucketName: images-repo.dev
 
 
 Outputs:
