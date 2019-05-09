@@ -33,7 +33,7 @@ public class ImageHandlerTest {
 
         given(context.getLogger()).willReturn(lambdaLogger);
         given(imageRequest.getFilename()).willReturn("51ca22dd0cf293ac67bb394a-295xh.jpg");
-        given(imageRequestParser.processInputEvent(any(InputStream.class), any(LambdaLogger.class))).willReturn(imageRequest);
+        given(imageRequestParser.processInputEvent(any(InputStream.class))).willReturn(imageRequest);
         given(imageService.getImageFrom(imageRequest)).willReturn(resizedStream);
 
         given(appConfig.getInputEventParser()).willReturn(imageRequestParser);
@@ -47,7 +47,7 @@ public class ImageHandlerTest {
         verify(appConfig, times(1)).getImageService();
         verify(appConfig, times(1)).getImageHandlerResponseWriter();
 
-        verify(imageRequestParser, times(1)).processInputEvent(any(), any(LambdaLogger.class));
+        verify(imageRequestParser, times(1)).processInputEvent(any());
         verify(imageHandlerResponseWriter, times(1)).writeResponse(any(), any(), any(ImageRequest.class));
     }
 

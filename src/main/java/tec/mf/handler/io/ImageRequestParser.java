@@ -1,6 +1,5 @@
 package tec.mf.handler.io;
 
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -19,13 +18,16 @@ public class ImageRequestParser implements InputEventParser{
     private static final String QUERY_STRING_HEIGHT_ELEMENT_NAME = "height";
 
     @Override
-    public ImageRequest processInputEvent(InputStream inputStream, LambdaLogger logger) {
+    public ImageRequest processInputEvent(InputStream inputStream) {
 
-        JSONParser parser = new JSONParser();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
         try{
+
+            JSONParser parser = new JSONParser();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
             JSONObject event = (JSONObject) parser.parse(reader);
-            logger.log(event.toJSONString());
+//            logger.log(event.toJSONString());
 
             String filename = ofNullable((JSONObject) event.get(PATH_PARAMETERS_ELEMENT_NAME))
                     .map(p -> (String) p.get(PATH_PARAMETERS_IMAGE_ELEMENT_NAME))

@@ -19,10 +19,9 @@ public class ImageRequestParserTest {
     @Test
     public void some() throws IOException {
         InputStream inputStream = new FileInputStream(new File("src/test/resources/image-request-event.json"));
-        LambdaLogger lambdaLogger = mock(LambdaLogger.class);
 
         ImageRequestParser parser = new ImageRequestParser();
-        ImageRequest imageRequest = parser.processInputEvent(inputStream, lambdaLogger);
+        ImageRequest imageRequest = parser.processInputEvent(inputStream);
 
         assertThat(imageRequest.getFilename()).isEqualTo("51ca22dd0cf293ac67bb394a-295xh.jpg");
         assertThat(imageRequest.getWidth()).isEqualTo(100);

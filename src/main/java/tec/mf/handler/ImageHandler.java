@@ -33,7 +33,7 @@ public class ImageHandler implements RequestStreamHandler {
     public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
         LambdaLogger logger = context.getLogger();
         logger.log("Inside Image Handler ");
-        ImageRequest imageRequest = this.inputEventParser().processInputEvent(inputStream, logger);
+        ImageRequest imageRequest = this.inputEventParser().processInputEvent(inputStream);
         InputStream imageResized = this.imageService().getImageFrom(imageRequest);
         this.imageHandlerResponseWriter().writeResponse(imageResized, outputStream, imageRequest);
     }
@@ -50,32 +50,4 @@ public class ImageHandler implements RequestStreamHandler {
         return this.appConfig.getImageHandlerResponseWriter();
     }
 
-//    private static String getStringFromInputStream(InputStream is) {
-//
-//        BufferedReader br = null;
-//        StringBuilder sb = new StringBuilder();
-//
-//        String line;
-//        try {
-//
-//            br = new BufferedReader(new InputStreamReader(is));
-//            while ((line = br.readLine()) != null) {
-//                sb.append(line);
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (br != null) {
-//                try {
-//                    br.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//
-//        return sb.toString();
-//
-//    }
 }

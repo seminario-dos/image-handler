@@ -4,6 +4,7 @@ import org.junit.Test;
 import tec.mf.handler.io.ImageRequest;
 import tec.mf.handler.s3.S3Dao;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -34,7 +35,7 @@ public class S3ImageServiceTest {
         verify(imageRequest, times(0)).getHeight();
         verify(s3Dao, times(1)).getImage(anyString());
 
-        assertThat(actual).isSameAs(original);
+        assertThat(actual).isInstanceOfAny(ByteArrayInputStream.class);
     }
 
     @Test

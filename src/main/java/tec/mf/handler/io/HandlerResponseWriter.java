@@ -13,10 +13,10 @@ public class HandlerResponseWriter implements ImageHandlerResponseWriter {
     public void writeResponse(InputStream inputStream, OutputStream outputStream, ImageRequest imageRequest) {
         try {
             JSONObject responseJson = new JSONObject();
-            JSONObject responseBody = new JSONObject();
-            responseBody.put("filename", imageRequest.getFilename());
-            responseBody.put("width", imageRequest.getWidth());
-            responseBody.put("height", imageRequest.getHeight());
+//            JSONObject responseBody = new JSONObject();
+//            responseBody.put("filename", imageRequest.getFilename());
+//            responseBody.put("width", imageRequest.getWidth());
+//            responseBody.put("height", imageRequest.getHeight());
 
             JSONObject headerJson = new JSONObject();
             headerJson.put("Content-Type", "image/jpeg");
