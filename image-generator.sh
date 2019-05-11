@@ -5,10 +5,17 @@ NUMBER_OF_IMAGE_VERSIONS=20
 IMAGE_COUNTER=1
 
 # Para generar el tamano aleatorio
-MIN_NUMBER=100
-MAX_NUMBER=1800
 
-FOLDER_NAME=cluster-a
+# ------ Hasta 500Kb ------
+# MIN_NUMBER=100
+# MAX_NUMBER=1800
+
+# ------ Hasta 1Mb ------
+MIN_NUMBER=3100
+MAX_NUMBER=4700
+
+# FOLDER_NAME=cluster-a
+FOLDER_NAME=cluster-b
 LOCAL_FOLDER_NAME=img/$FOLDER_NAME
 
 
